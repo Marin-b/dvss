@@ -1,6 +1,6 @@
 import socketIOClient from "socket.io-client";
 
-const socketInstance = socketIOClient("http://localhost:3001")
+const socketInstance = socketIOClient(process.env.SOCKET_CLIENT_URL)
 
 const initialState = {
   socket: socketInstance,
