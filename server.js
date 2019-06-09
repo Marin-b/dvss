@@ -8,7 +8,7 @@ import countDown from "./server/countDown"
 import opennode from "./server/opennode"
 import socketEvents from "./server/socket"
 
-import { updateBalance } from "./helpers"
+import { updateBalance } from "./server/helpers"
 
 const PORT = process.env.PORT || 3001
 
