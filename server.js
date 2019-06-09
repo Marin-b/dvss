@@ -4,9 +4,9 @@ import mongoose from "mongoose";
 import http from "http";
 import socketIO from "socket.io";
 
-import countDown from "./countDown"
-import opennode from "./opennode"
-import socketEvents from "./socket"
+import countDown from "./server/countDown"
+import opennode from "./server/opennode"
+import socketEvents from "./server/socket"
 
 import { updateBalance } from "./helpers"
 
@@ -47,7 +47,7 @@ app.post('/webhook/charge', (req, res) => {
 })
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname + '/../client/build/index.html'))
+  res.sendFile(path.join(__dirname + '/client/build/index.html'))
 })
 
 io.on("connection", socket => {
