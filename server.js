@@ -39,8 +39,7 @@ app.post('/webhook/charge', (req, res) => {
   console.log('hooked on')
   if (isValid && charge.status === 'paid') {
       //Signature is valid
-      console.log("type", typeof charge.price)
-    updateBalance(io, charge.description, charge.price)
+    updateBalance(io, charge.description, parseInt(charge.price, 10))
   }
   else {
       //Signature is invalid. Ignore.

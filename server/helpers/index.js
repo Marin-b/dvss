@@ -39,7 +39,6 @@ export const updateBalance = async (io, id, amount) => {
   const user = await User.findById(id)
   const balance = user.balance
   user.balance = balance + amount
-  console.log('afte balance update', user.balance)
   await user.save()
   io.emit(`updateBalance-${id}`, user.balance )
 }
