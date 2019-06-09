@@ -37,7 +37,7 @@ const checkBets = (round, io) => {
 
 export const updateBalance = async (io, id, amount) => {
   const user = await User.findById(id)
-  user.balance += amount
+  user.balance = user.balance + amount
   await user.save()
   io.emit(`updateBalance-${id}`, user.balance )
 }
