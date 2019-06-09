@@ -74,6 +74,7 @@ class BalanceContainer extends Component {
 
   handleDeposit() {
     if(this.props.userId){
+      console.log(this.amountInput.current.inputRef.current.value)
       this.props.socket.emit("newDeposit", this.amountInput.current.inputRef.current.value, this.props.userId)
     }
   }
