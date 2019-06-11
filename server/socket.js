@@ -58,6 +58,11 @@ const socketEvent = (socket) => {
     }
   })
 
+  socket.on("getRoundInformation", async () => {
+    const previousRounds = await Round.find().sort({'_id': -1}).limit(4)
+    console.log("rounds", previousRounds)
+  })
+
   socket.on("newDeposit", (amount, userId) => {
     opennode.createCharge({
       amount: amount,

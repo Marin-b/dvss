@@ -2,7 +2,6 @@ const initialState = {
   connected: false,
   userName: undefined,
   hashedKey: undefined,
-  placedBet: undefined,
   id: undefined,
   balance: 0,
   payreq: undefined
@@ -30,8 +29,7 @@ export const updatePayreq = (newPayreq) => ({type: UPDATE_PAYREQ, payload: newPa
 
 export const updateBalance = (newBalance) => ({type: UPDATE_BALANCE, payload: newBalance})
 
-export const userSocketEvents = (dispatch, getState) => {
-  const socket = getState().socketReducer.socket
+export const userSocketEvents = (dispatch, socket) => {
   socket.on('userConnected', (userName, hashedKey, balance, id, placedBet) => {
     dispatch(connectUser(userName, hashedKey, balance, id, placedBet))
     socket.on(`updateBalance-${id}`, (newBalance) =>{

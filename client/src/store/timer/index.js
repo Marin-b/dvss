@@ -10,9 +10,7 @@ const UPDATE_TIMER = "timer/update-timer"
 
 const updateTimer = (newTimer) => ({type: UPDATE_TIMER, payload: newTimer})
 
-export const timerSocketEvents = (dispatch, getState) => {
-  const socket = getState().socketReducer.socket
-  console.log(socket)
+export const timerSocketEvents = (dispatch, socket) => {
   socket.on("timerUpdate", (newTimer) => {
     dispatch(updateTimer(newTimer))
   })

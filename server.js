@@ -15,10 +15,10 @@ const PORT = process.env.PORT || 3001
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 
-const path = require('path')
-// Serve static files from the React frontend app
-app.use(express.static(path.join(__dirname, 'client/build')))
-// Anything that doesn't match the above, send back index.html
+// const path = require('path')
+// // Serve static files from the React frontend app
+// app.use(express.static(path.join(__dirname, 'client/build')))
+// // Anything that doesn't match the above, send back index.html
 
 
 app.get('/api/greeting', (req, res) => {
@@ -46,16 +46,17 @@ app.post('/webhook/charge', (req, res) => {
   }
 })
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname + '/client/build/index.html'))
-})
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname + '/client/build/index.html'))
+// })
 
 io.on("connection", socket => {
+  socket.setMaxListeners(20)
   socketEvents(socket)
 })
 
 const MONGO_URL = process.env.MONGODB_URI || `mongodb+srv://${process.env.MONGOUSER}:${process.env.MONGOPASSWORD}@cluster0-0vkq1.gcp.mongodb.net/${process.env.MONGODB}?retryWrites=true`
-console.log(MONGO_URL)
+
 mongoose.connect( MONGO_URL,
   { useNewUrlParser: true }
 )

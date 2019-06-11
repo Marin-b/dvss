@@ -121,7 +121,6 @@ class Bet extends Component {
 
   placeBet(){
     if(this.canPlaceBet){
-      console.log("placing bet")
       this.canPlaceBet = false
       this.props.socket.emit("placeBet", this.state.value, this.state.direction, this.props.userId, this.props.roundId)
       setTimeout(() => this.canPlaceBet = true , 1000)

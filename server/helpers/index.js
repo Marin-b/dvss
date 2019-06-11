@@ -4,7 +4,6 @@ import fetch from "node-fetch"
 
 export const findUser = async (givenKey) => {
   const [name, key] = givenKey.split('-')
-  console.log(name, key)
   const users = await User.find({userName: name})
   for(const user of users){
     const isEqual = await bcrypt.compare(key, user.key)
@@ -19,13 +18,10 @@ const checkBets = (round, io) => {
   const bets = round.bets
   bets.forEach( async (betId) => {
     const bet = await Bet.findById(betId)
-    console.log(bet)
     const user = await User.findById(bet.gambler)
     user.placedBet = false
     user.save()
-    console.log(user)
     let roundWon = false
-    console.log("bet", bet.direction, "round", round.direction)
     if (bet.direction === round.direction){
       console.log("win!!!!")
       roundWon = true
