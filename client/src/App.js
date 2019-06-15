@@ -7,11 +7,13 @@ import User from "./components/user"
 import Balance from "./components/balance"
 import Timer from "./components/timer"
 import Bet from "./components/bet"
+import History from "./components/history"
+import Result from "./components/result"
 
 const AppWrapper = styled.div`
   padding: 40px;
 `
-const FirstRow = styled.div`
+const Row = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -24,11 +26,16 @@ function App() {
      <Provider store={store}>
       <AppWrapper>
         <User />
-        <FirstRow>
+        <Row>
           <Balance />
           <Timer />
           <Bet />
-        </FirstRow>
+        </Row>
+        <br />
+        <Row>
+          <History />
+          <Result />
+        </Row>
       </AppWrapper>
     </Provider>
   );

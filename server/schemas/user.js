@@ -10,9 +10,6 @@ const userSchema = new mongoose.Schema({
   },
   balance: {
     type: Number
-  },
-  placedBet: {
-    type: Boolean
   }
 });
 

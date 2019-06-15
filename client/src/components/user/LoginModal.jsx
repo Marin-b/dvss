@@ -8,7 +8,7 @@ import bcrypt from "bcryptjs";
 import { getSocket } from "../../store/socket"
 
 const BlackBackground = styled.div`
-  background-color: #333;
+  background-color: #B0B0B0;
   width: 100vw;
   height: 100vh;
   position: absolute;
@@ -36,7 +36,7 @@ const ModalDiv = styled.div`
 `
 const Welcome = styled.h3`
   font-size: 20px;
-  color: #333;
+  color: #B0B0B0;
   opacity: 1;
 `
 const InlineForm = styled.div`
@@ -49,11 +49,11 @@ const StyledInput = styled(Input)`
   width: 70%;
 `
 const StyledButton = styled(Button)`
-  color: ${(props) => props.primary ? "white": "#1245ff" } !important;
+  color: ${(props) => props.primary ? "white": "#1853FD" } !important;
   width: 20%;
   margin-left: 5%;
-  background-color: ${(props) => props.primary ? "#1245ff": "white" } !important;
-  border: #1245ff solid 1px !important;
+  background-color: ${(props) => props.primary ? "#1853FD": "white" } !important;
+  border: #1853FD solid 1px !important;
   &:active{
     border-radius: 20px;
   }
@@ -99,7 +99,7 @@ class LoginModal extends Component{
       <div>
         <ModalDiv>
           <Welcome>
-            Welcome to <b style={{color: "#1245ff", fontWeight: "1000"}}>dvss</b>, <br /> please login or create an account
+            Welcome to <b style={{color: "#1853FD", fontWeight: "1000"}}>dvss</b>, <br /> please login or create an account
           </Welcome>
           <InlineForm>
             <StyledInput placeholder="Nickname" ref={this.signupRef} />

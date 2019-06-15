@@ -23,15 +23,15 @@ const USER_CONNECT = "user/connect"
 const UPDATE_PAYREQ = "user/update-payreq"
 const UPDATE_BALANCE = "user/update-balance"
 
-const connectUser = (u, h, b, i, p) =>({type: USER_CONNECT, payload: { userName: u, hashedKey: h, balance: b, id: i, placedBet: p}});
+const connectUser = (u, h, b, i, p) =>({type: USER_CONNECT, payload: { userName: u, hashedKey: h, balance: b, id: i}});
 
 export const updatePayreq = (newPayreq) => ({type: UPDATE_PAYREQ, payload: newPayreq});
 
 export const updateBalance = (newBalance) => ({type: UPDATE_BALANCE, payload: newBalance})
 
 export const userSocketEvents = (dispatch, socket) => {
-  socket.on('userConnected', (userName, hashedKey, balance, id, placedBet) => {
-    dispatch(connectUser(userName, hashedKey, balance, id, placedBet))
+  socket.on('userConnected', (userName, hashedKey, balance, id) => {
+    dispatch(connectUser(userName, hashedKey, balance, id))
     socket.on(`updateBalance-${id}`, (newBalance) =>{
       dispatch(updateBalance(newBalance))
     })

@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { getTimer } from "../../store/timer"
 
 const TimerBox = styled.div`
-  color: #1245ff;
+  color: #1853FD;
   font-size: 100px;
   margin: 40px 0;
 `

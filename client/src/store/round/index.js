@@ -1,13 +1,27 @@
+import { removeBet } from "../bet"
+
 const initialState = {
   roundId: undefined,
-  BTC: undefined,
-  BTC_10: undefined,
-  BTC_20: undefined,
+  BTC: {v: undefined, d: undefined},
+  BTC_10: {v: undefined, d: undefined},
+  BTC_20: {v: undefined, d: undefined}
 }
 
 const getReducer = (state) => state.roundReducer
 
 export const getRoundId = (state) => getReducer(state).roundId
+
+export const getResult = (state) => {
+  const object = getReducer(state)
+  const difference = Math.abs(object.BTC.v - object.BTC_10.v)
+  const direction = object.BTC.d
+  return ({diff: difference.toFixed(2), dir: direction})
+}
+
+export const getBitCoinPriceHistory = (state) => {
+  const object = getReducer(state)
+  return ({current: object.BTC, ten: object.BTC_10, twenty: object.BTC_20})
+}
 
 const UPDATE_ROUNDID = "round/update-id"
 const UPDATE_BTC = "round/update-btc"
@@ -20,9 +34,10 @@ export const roundSocketEvents = (dispatch, socket) => {
   socket.on('newRound', (roundId) => {
     dispatch(updateRoundId(roundId))
   })
-  socket.on("roundInformation", (roundId, BTC, BTC_10, BTC_20,) => {
+  socket.on("roundInformation", (roundId, BTC, BTC_10, BTC_20) => {
     dispatch(updateRoundId(roundId))
     dispatch(updateBtcValues(BTC, BTC_10, BTC_20))
+    removeBet(dispatch)
   })
 }
 

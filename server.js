@@ -7,6 +7,7 @@ import socketIO from "socket.io";
 import countDown from "./server/countDown"
 import opennode from "./server/opennode"
 import socketEvents from "./server/socket"
+import initStore from "./server/store"
 
 import { updateBalance } from "./server/helpers"
 
@@ -15,10 +16,10 @@ const PORT = process.env.PORT || 3001
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 
-// const path = require('path')
-// // Serve static files from the React frontend app
-// app.use(express.static(path.join(__dirname, 'client/build')))
-// // Anything that doesn't match the above, send back index.html
+const path = require('path')
+// Serve static files from the React frontend app
+app.use(express.static(path.join(__dirname, 'client/build')))
+// Anything that doesn't match the above, send back index.html
 
 
 app.get('/api/greeting', (req, res) => {
@@ -31,7 +32,6 @@ const server = http.createServer(app)
 
 const io = socketIO(server)
 
-countDown(io)
 
 app.post('/webhook/charge', (req, res) => {
   const charge = req.body;
@@ -46,9 +46,9 @@ app.post('/webhook/charge', (req, res) => {
   }
 })
 
-// app.get('*', (req, res) => {
-//   res.sendFile(path.join(__dirname + '/client/build/index.html'))
-// })
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname + '/client/build/index.html'))
+})
 
 io.on("connection", socket => {
   socket.setMaxListeners(20)
@@ -61,9 +61,9 @@ mongoose.connect( MONGO_URL,
   { useNewUrlParser: true }
 )
 .then(() => {
-  server.listen(PORT, () =>
-    console.log('Express server is running on localhost:3001')
-  );
+  server.listen(PORT, () => console.log('Express server is running on localhost:3001'));
+  initStore();
+  countDown(io);
 })
 .catch(err => {
   console.log(err);

@@ -1,14 +1,14 @@
 import { User, Bet, Round } from "./schemas";
 import opennode from "./opennode";
-import { findUser } from "./helpers"
+import { findUser, emitRoundInformation } from "./helpers"
+import store from "store"
 
 const socketEvent = (socket) => {
   socket.on("createUser", (nickName, hashedKey) => {
     const newUser = new User({
       userName: nickName,
       key: hashedKey,
-      balance: 0,
-      placedBet: false
+      balance: 0
     })
     newUser.save()
     .then(result => {
@@ -31,6 +31,13 @@ const socketEvent = (socket) => {
     const user = await User.findById(userId)
     const round = await Round.findById(roundId)
     if (user.balance >= amount && !user.placedBet){
+      const placedBet = store.get('placedBet')
+      if (placedBet.includes(userId)) {
+        return
+      } else {
+        placedBet.push(userId)
+        store.set('placedBet', placedBet)
+      }
       const bet = new Bet({
         direction: direction,
         amount: amount,
@@ -59,8 +66,7 @@ const socketEvent = (socket) => {
   })
 
   socket.on("getRoundInformation", async () => {
-    const previousRounds = await Round.find().sort({'_id': -1}).limit(4)
-    console.log("rounds", previousRounds)
+    emitRoundInformation(socket)
   })
 
   socket.on("newDeposit", (amount, userId) => {

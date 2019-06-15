@@ -13,12 +13,12 @@ import { getSocket } from "../../store/socket"
 
 const Header = styled.div`
   font-size: 40px;
-  color: #1245ff;
+  color: #1853FD;
   padding: 20px;
 `
 
 const BalanceBox = styled.div`
-  background-color: #1245ff;
+  background-color: #1853FD;
   padding: 20px;
   height: 25vh;
   width: 30vw;
@@ -48,10 +48,10 @@ const BalanceText = styled.div`
   margin: 0 auto;
 `
 const StyledButton = styled(Button)`
-  color: ${(props) => props.primary ? "white": "#1245ff" } !important;
+  color: ${(props) => props.primary ? "white": "#1853FD" } !important;
   width: 40%;
   margin-left: 5%;
-  background-color: ${(props) => props.primary ? "#1245ff": "white" } !important;
+  background-color: ${(props) => props.primary ? "#1853FD": "white" } !important;
   border: white solid 1px !important;
 `
 

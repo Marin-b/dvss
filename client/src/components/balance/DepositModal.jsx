@@ -42,7 +42,7 @@ const Exit = styled.div`
   top: 0;
   right: 0;
   font-size: 50px;
-  color: #1245ff;
+  color: #1853FD;
   cursor: pointer;
 `
 const getQRCodeUrl = (payreq) => `https://api.qrserver.com/v1/create-qr-code/?data=${payreq}&size=175x175`
