@@ -12,10 +12,10 @@ import { getRoundId} from "../../store/round"
 const createSliderWithTooltip = Slider.createSliderWithTooltip;
 const Range = createSliderWithTooltip(Slider);
 
-const MAX = 100000
+const MAX = 50000
 const MIN = 0
-const DEFAULT = 10000
-const STEPS = 100
+const DEFAULT = 1000
+const STEPS = 1000
 
 const BetContainer = styled.div`
   background-color: #1853FD;

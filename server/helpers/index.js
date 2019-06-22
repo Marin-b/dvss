@@ -15,26 +15,6 @@ export const findUser = async (givenKey) => {
   return null
 }
 
-// export const updateRounds = async (roundId, previousRoundId, io) => {
-//   const round = await Round.findById(roundId)
-//   const previousRound = await Round.findById(previousRoundId)
-//   const response = await fetch(
-//     "https://apiv2.bitcoinaverage.com/indices/global/ticker/BTCUSD"
-//   );
-//   const body = await response.json();
-//   const newValue = await body["last"];
-//   round.value = newValue
-//   const previousValue = previousRound.value
-//   if (newValue === previousValue){
-//     round.direction = "equal"
-//   } else if ( newValue > previousValue){
-//     round.direction = "up"
-//   } else if ( newValue < previousValue){
-//     round.direction = "down"
-//   }
-//   round.save()
-//   checkBets(round, io)
-// }
 export const emitRoundInformation = (io) => {
   io.emit("roundInformation", store.get('roundId'), store.get('C_BTC'), store.get('1_BTC'), store.get('2_BTC'))
 }

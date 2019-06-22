@@ -16,10 +16,10 @@ const PORT = process.env.PORT || 3001
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 
-const path = require('path')
-// Serve static files from the React frontend app
-app.use(express.static(path.join(__dirname, 'client/build')))
-// Anything that doesn't match the above, send back index.html
+// const path = require('path')
+// // Serve static files from the React frontend app
+// app.use(express.static(path.join(__dirname, 'client/build')))
+// // Anything that doesn't match the above, send back index.html
 
 
 app.get('/api/greeting', (req, res) => {
@@ -46,9 +46,9 @@ app.post('/webhook/charge', (req, res) => {
   }
 })
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname + '/client/build/index.html'))
-})
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname + '/client/build/index.html'))
+// })
 
 io.on("connection", socket => {
   socket.setMaxListeners(20)

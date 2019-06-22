@@ -10,7 +10,7 @@ const runCountDown = (io) => {
   io.emit("timerUpdate", timeLeft)
   if(timeLeft === 0){
     endOfRound(io)
-    store.set('timer', 10)
+    store.set('timer', 9)
   } else {
     store.set('timer', timeLeft - 1)
   }

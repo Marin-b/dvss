@@ -21,6 +21,14 @@ const Row = styled.div`
     flex-direction: column;
   }
 `
+
+const Block = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  heigth: 100%;
+  justify-content: space-between;
+`
 function App() {
   return (
      <Provider store={store}>
@@ -28,14 +36,17 @@ function App() {
         <User />
         <Row>
           <Balance />
-          <Timer />
-          <Bet />
-        </Row>
-        <br />
-        <Row>
-          <History />
+          <div />
           <Result />
         </Row>
+        <Row>
+          <History />
+          <Block>
+            <Timer />
+            <Bet />
+          </Block>
+        </Row>
+        <br />
       </AppWrapper>
     </Provider>
   );

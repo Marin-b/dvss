@@ -20,7 +20,7 @@ export const getResult = (state) => {
 
 export const getBitCoinPriceHistory = (state) => {
   const object = getReducer(state)
-  return ({current: object.BTC, ten: object.BTC_10, twenty: object.BTC_20})
+  return ({current: object.BTC, ten: object.BTC_10, twenty: object.BTC_20, next: {d: 'equal', v: '?'}})
 }
 
 const UPDATE_ROUNDID = "round/update-id"
