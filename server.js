@@ -21,7 +21,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // app.use(express.static(path.join(__dirname, 'client/build')))
 // // Anything that doesn't match the above, send back index.html
 
-
+// example for express - not imp - does nothing - delete
 app.get('/api/greeting', (req, res) => {
   const name = req.query.name || 'Worlds';
   res.setHeader('Content-Type', 'application/json');
@@ -40,7 +40,7 @@ app.post('/webhook/charge', (req, res) => {
   if (isValid && charge.status === 'paid') {
       //Signature is valid
     updateBalance(io, charge.description, parseInt(charge.price, 10))
-  }
+  } //chargeDescription = userID
   else {
       //Signature is invalid. Ignore.
   }
@@ -50,12 +50,12 @@ app.post('/webhook/charge', (req, res) => {
 //   res.sendFile(path.join(__dirname + '/client/build/index.html'))
 // })
 
-io.on("connection", socket => {
+io.on("connection", socket => { //everytime someone loads the page this runs - connector
   socket.setMaxListeners(20)
   socketEvents(socket)
 })
-
-const MONGO_URL = process.env.MONGODB_URI || `mongodb+srv://${process.env.MONGOUSER}:${process.env.MONGOPASSWORD}@cluster0-0vkq1.gcp.mongodb.net/${process.env.MONGODB}?retryWrites=true`
+// creates a socket for each user and can be used to communicate with the user using that socket
+const MONGO_URL = process.env.MONGODB_URI || `mongodb+srv://${process.env.MONGOUSER}:${process.env.MONGOPASSWORD}@cluster0-8n4ug.mongodb.net/${process.env.MONGODB}?retryWrites=true`
 
 mongoose.connect( MONGO_URL,
   { useNewUrlParser: true }

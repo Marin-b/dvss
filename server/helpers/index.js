@@ -39,7 +39,11 @@ export const updateBalance = async (io, id, amount) => {
 }
 
 const getRoundDirection = (currentValue) => {
-  const oldValue = store.get('C_BTC').v
+  const temp = store.get('C_BTC')
+  if(!temp){
+    return 'equal'
+  }
+  const oldValue = temp.v
 
   console.log('oldValue', oldValue, 'currentValue', currentValue)
   if(!oldValue) {

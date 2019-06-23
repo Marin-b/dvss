@@ -66,3 +66,5 @@ const userReducer = (state = initialState, action) => {
 }
 
 export default userReducer
+
+// for the entire store : read and understand redux

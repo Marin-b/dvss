@@ -3,8 +3,8 @@ import { removeBet } from "../bet"
 const initialState = {
   roundId: undefined,
   BTC: {v: undefined, d: undefined},
-  BTC_10: {v: undefined, d: undefined},
-  BTC_20: {v: undefined, d: undefined}
+  BTC_10: {v: undefined, d: undefined}, //init val
+  BTC_20: {v: undefined, d: undefined} //init val
 }
 
 const getReducer = (state) => state.roundReducer
