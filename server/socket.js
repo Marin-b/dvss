@@ -12,7 +12,6 @@ const socketEvent = (socket) => {
     })
     newUser.save()
     .then(result => {
-      console.log(result)
       socket.emit("userConnected", result.userName, result.key, result.balance, result._id)
     })
     .catch(err => console.log(err))

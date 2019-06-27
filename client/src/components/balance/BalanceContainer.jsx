@@ -69,7 +69,7 @@ class BalanceContainer extends Component {
   }
 
   checkInputValidity() {
-    this.amountInput.current.inputRef.current.value=this.amountInput.current.inputRef.current.value.replace(/[^\d]/,'')
+    this.amountInput.current.inputRef.current.value = this.amountInput.current.inputRef.current.value.replace(/[^\d]/,'')
   }
 
   handleDeposit() {
@@ -84,12 +84,12 @@ class BalanceContainer extends Component {
         <BalanceBox>
           <BalanceText>
             Balance: &nbsp;
-            <b> {this.props.balance}</b>
+            <b> {this.props.balance} </b>
           </BalanceText>
             <br />
-          <StyledInput onKeyUp ={this.checkInputValidity} ref={this.amountInput} />
+          <StyledInput onKeyUp = {this.checkInputValidity} ref={this.amountInput} />
           <ActionContainer>
-            <StyledButton onClick={this.handleDeposit}>
+            <StyledButton onClick = {this.handleDeposit}>
               Deposit
             </StyledButton>
             <StyledButton primary >
@@ -98,7 +98,7 @@ class BalanceContainer extends Component {
           </ActionContainer>
         </BalanceBox>
       </div>
-      )
+    )
   }
 }
 
