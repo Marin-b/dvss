@@ -7,7 +7,6 @@ import 'rc-slider/assets/index.css';
 
 import { getSocket } from "../../store/socket"
 import { getUserId } from "../../store/user"
-import { getRoundId} from "../../store/round"
 
 const createSliderWithTooltip = Slider.createSliderWithTooltip;
 const Range = createSliderWithTooltip(Slider);
@@ -122,7 +121,7 @@ class PlacedBet extends Component {
   placeBet(){
     if(this.canPlaceBet){
       this.canPlaceBet = false
-      this.props.socket.emit("placeBet", this.state.value, this.state.direction, this.props.userId, this.props.roundId)
+      this.props.socket.emit("placeBet", this.state.value, this.state.direction, this.props.userId)
       setTimeout(() => this.canPlaceBet = true , 1000)
     }
   }
@@ -158,9 +157,9 @@ class PlacedBet extends Component {
             <OptionText>Down</OptionText>
           </Option>
         </OptionsBox>
-        {this.props.roundId && <StyledButton onClick={this.placeBet} >
+        <StyledButton onClick={this.placeBet} >
           Place Bet
-        </StyledButton>}
+        </StyledButton>
       </BetContainer>
       )
   }
@@ -173,7 +172,6 @@ const mapDispatchToProps = (dispatch) => ({
 const mapStateToProps = (state) => ({
   socket: getSocket(state),
   userId: getUserId(state),
-  roundId: getRoundId(state)
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlacedBet)

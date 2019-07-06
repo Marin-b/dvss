@@ -27,9 +27,9 @@ const socketEvent = (socket) => {
     }
   })
 
-  socket.on("placeBet", async (amount, direction, userId, roundId) => {
+  socket.on("placeBet", async (amount, direction, userId) => {
     const user = await User.findById(userId)
-    const round = await Round.findById(roundId)
+    const round = await Round.findById(store.get('bettingRound'))
     if (user.balance >= amount && !user.placedBet){
       const placedBet = store.get('placedBet')
       if (placedBet.includes(userId)) {

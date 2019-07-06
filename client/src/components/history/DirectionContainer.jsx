@@ -6,12 +6,17 @@ import Dot from "./Dot"
 import { getBitCoinPriceHistory } from "../../store/round"
 import { getTimer } from "../../store/timer"
 
+const MAXTIMER = 5
+
+const NEWDOTS = {
+  x: 100 + (100/6),
+  d: 'equal'
+}
 
 const Container = styled.div`
 	position: absolute;
 	width: 100%;
 	height: 100%;
-	padding: 0 5%;
 	overflow: hidden;
 `
 
@@ -26,60 +31,51 @@ class DirectionContainer extends Component {
 		super(props)
 		const object = this.props.btcHistory
 		this.timer = this.props.timer
-		this.dots = [{ ...object.twenty, m: -25, x: 0, key: 0}, { ...object.ten, m: 0, x: 0, key: 1}, {...object.current, m: 25 , x: 0, key: 2}, { ...object.next, m: 50, x: 0, key: 3}, { ...object.next, m: 75, x: 0, key: 4}, { ...object.next, m: 100, x: 0, key: 5}]
-		this.key = 6
+		this.dots = []
+		this.key = 0
 		this.updateTimer = this.updateTimer.bind(this)
+    this.updateDirection = this.updateDirection.bind(this)
+    let mult = -(2 * (100 / 6))
+    for (let i = 0; i <= 10; i ++){
+      this.dots.push({...NEWDOTS, m: mult, key: this.key})
+      mult += 100/6
+      this.key += 1
+    }
 	}
 
 	buildDots(){
-		
+
 	}
 
-	getYPosition(direction){
-		if (direction === 'up'){
-			return 5
-		} else if (direction === 'equal') {
-			return 15
-		} else if (direction === 'down') {
-			return 25
-		}
-	}
 	getTopPos(dir){
 	 	if (dir === 'up'){
-	 		return 10
+	 		return 4
 		} else if (dir === 'down'){
-			return 90
+			return 85
 		}else {
-			return 45
+			return 40
 		}
 	}
-
+  updateDirection(){
+  }
 	updateTimer(){
 		this.timer = this.props.timer
 		if (this.timer === 0){
-			this.dots.shift()
-			this.dots.push({ d: 'equal', v: '?', m: 125, x: 125 + (2.5 * 10), key: this.key})
-			this.key += 1 
-		}
-		this.dots.forEach((dot) => {
-			dot.x = dot.m + (2.5 * this.timer)
-			if(dot.x <= 0) {
-				dot.m = -25
-			} else if (dot.x <= 25) {
-				dot.m = 0
-			} else if (dot.x <= 50){
-				dot.m = 25
-			} else if (dot.x <= 75 ){
-				dot.m = 50
-			} else if (dot.x <= 100 ){
-				dot.m = 75
-			} else if (dot.x <= 125 ){
-				dot.m = 100
-			}
-			if (dot.x <= 72.5 && dot.x >= 55){
-				dot.d = this.props.btcHistory.current.d
-			}
-		})
+		  this.dots.shift()
+			this.dots.push({ d: 'equal', m: 100, x: 100 + 2 * (100/6), key: this.key})
+			this.key += 1
+      let mult = -(2 * (100 / 6))
+      this.dots.forEach((dot) => {
+        dot.m = mult
+        dot.x = mult + 3.3 * 5
+        mult += 100/6
+      })
+		} else {
+      this.dots.forEach((dot) => {
+        dot.x = dot.m + (3.33 * this.timer)
+        this.dots[5].d = this.props.btcHistory.current.d
+      })
+    }
 	}
 
 	render(){
@@ -89,11 +85,11 @@ class DirectionContainer extends Component {
 		return(
 			<Container>
 				<SecondaryContainer>
-					{this.dots.map((dot) => <Dot left={dot.x} top={this.getTopPos(dot.d)} key={dot.key} />)}
+					{this.dots.map((dot) => <Dot left={dot.x - 4} top={this.getTopPos(dot.d)} key={dot.key} />)}
 				</SecondaryContainer>
 			</Container>
 		)
-	}	
+	}
 }
 
 const mapStateToProps = (state) => ({

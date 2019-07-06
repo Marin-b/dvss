@@ -1,10 +1,8 @@
 import { removeBet } from "../bet"
 
 const initialState = {
-  roundId: undefined,
-  BTC: {v: undefined, d: undefined},
-  BTC_10: {v: undefined, d: undefined},
-  BTC_20: {v: undefined, d: undefined}
+  value: 0,
+  values: []
 }
 
 const getReducer = (state) => state.roundReducer
@@ -12,31 +10,39 @@ const getReducer = (state) => state.roundReducer
 export const getRoundId = (state) => getReducer(state).roundId
 
 export const getResult = (state) => {
-  const object = getReducer(state)
-  const difference = Math.abs(object.BTC.v - object.BTC_10.v)
-  const direction = object.BTC.d
-  return ({diff: difference.toFixed(2), dir: direction})
+  const values = getReducer(state).values
+  if(values.length > 2) {
+    const difference = values[0] - values[1]
+    let direction
+    if (difference < 0){
+      direction = "down"
+    } else if ( difference > 0) {
+      direction = "up"
+    } else {
+      direction = "equal"
+    }
+    const absDifference = Math.abs(difference)
+    return ({diff: absDifference.toFixed(2), dir: direction})
+  } else {
+    return ({diff: 0, dir: "unknown"})
+  }
 }
 
-export const getBitCoinPriceHistory = (state) => {
-  const object = getReducer(state)
-  return ({current: object.BTC, ten: object.BTC_10, twenty: object.BTC_20, next: {d: 'equal', v: '?'}})
-}
+export const getCurrentBtc = (state) => getReducer(state).value
 
-const UPDATE_ROUNDID = "round/update-id"
-const UPDATE_BTC = "round/update-btc"
+export const getBitCoinPriceHistory = (state) => getReducer(state).values
 
-const updateRoundId = (newId) => ({ type: UPDATE_ROUNDID, payload: newId})
+const UPDATE_VALUE = "round/update-value"
+const UPDATE_VALUES = "round/update-values"
 
-const updateBtcValues = (BTC, BTC_10, BTC_20) => ({type: UPDATE_BTC, payload: {BTC: BTC, BTC_10: BTC_10, BTC_20: BTC_20 }})
+const updateValue = (newValue) => ({ type: UPDATE_VALUE, payload: newValue})
+
+const updateValues = (values) => ({type: UPDATE_VALUES, payload: values})
 
 export const roundSocketEvents = (dispatch, socket) => {
-  socket.on('newRound', (roundId) => {
-    dispatch(updateRoundId(roundId))
-  })
-  socket.on("roundInformation", (roundId, BTC, BTC_10, BTC_20) => {
-    dispatch(updateRoundId(roundId))
-    dispatch(updateBtcValues(BTC, BTC_10, BTC_20))
+  socket.on("roundInformation", (value, values) => {
+    dispatch(updateValues(values))
+    dispatch(updateValue(value))
     removeBet(dispatch)
   })
 }
@@ -44,13 +50,13 @@ export const roundSocketEvents = (dispatch, socket) => {
 const roundReducer = (state = initialState, action ) => {
   const {type, payload} = action;
   switch (type){
-  case UPDATE_ROUNDID:
+  case UPDATE_VALUE:
     return Object.assign({}, state, {
-      roundId: payload
+      value: payload
     });
-  case UPDATE_BTC:
+  case UPDATE_VALUES:
     return Object.assign({}, state, {
-      ...payload
+      values: payload
     });
   default:
     return state

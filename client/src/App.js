@@ -10,6 +10,8 @@ import Bet from "./components/bet"
 import History from "./components/history"
 import Result from "./components/result"
 
+import colors from "./style"
+
 const AppWrapper = styled.div`
   padding: 40px;
 `
@@ -26,24 +28,32 @@ const Block = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  heigth: 100%;
+  min-height: 400px;
   justify-content: space-between;
+  max-height: 100% !important;
+`
+const Logo = styled.div`
+  color: ${colors.secondary}
+  font-size: 40px;
+  font-family: 'Press Start 2P', cursive;
+  padding-bottom: 10px;
 `
 function App() {
   return (
      <Provider store={store}>
       <AppWrapper>
+        <Logo>
+          DVSS
+        </Logo>
         <User />
         <Row>
           <Balance />
-          <div />
-          <Result />
+          <Timer />
+          <Bet />
         </Row>
         <Row>
-          <History />
+
           <Block>
-            <Timer />
-            <Bet />
           </Block>
         </Row>
         <br />

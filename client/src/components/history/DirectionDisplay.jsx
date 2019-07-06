@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { connect } from "react-redux";
 import styled from "styled-components";
-
+import colors from "../../style"
 import DirectionContainer from "./DirectionContainer"
 
 const Container = styled.div`
@@ -17,15 +17,15 @@ const Header = styled.div`
 
 const HeaderLabel = styled.div`
 	text-align: center;
-	width: 10%;
-	color: #B0B0B0;
+	width: 0%;
+  margin-left: -5%;
+	color: ${colors.tertiary};
 	font-size: 20px;
 `
 
 const GraphContainer = styled.div`
 	height: 90%;
-	border: #1853FD solid 1px !important;
-	border-radius: 20px;
+	border: ${colors.secondary} solid 5px !important;
 	width: 100%;
 	display: flex;
 	justify-content: space-between;
@@ -34,13 +34,13 @@ const GraphContainer = styled.div`
 
 const DottedLineContainer = styled.div`
 	height: 100%;
-	width: 10%;
+	width: 0%;
 `
 
 const DottedLine = styled.div`
 	width: 50%;
 	height: 100%;
-	border-right: 2px dotted #B0B0B0;
+	border-right: 2px dotted ${colors.tertiary};
 `
 class DirectionDisplay extends Component {
 	render(){
@@ -48,24 +48,30 @@ class DirectionDisplay extends Component {
 			<Container>
 				<Header>
 					<HeaderLabel>
-						-30s
+
 					</HeaderLabel>
 					<HeaderLabel>
-						-20s
+						-15s
 					</HeaderLabel>
 					<HeaderLabel>
 						-10s
 					</HeaderLabel>
 					<HeaderLabel>
-						0s
+						-5s
 					</HeaderLabel>
 					<HeaderLabel>
-						10s
+						0s
 					</HeaderLabel>
+          <HeaderLabel>
+            5s
+          </HeaderLabel>
+          <HeaderLabel>
+
+          </HeaderLabel>
 				</Header>
 				<GraphContainer>
 					<DottedLineContainer>
-						<DottedLine />
+
 					</DottedLineContainer>
 					<DottedLineContainer>
 						<DottedLine />
@@ -79,11 +85,17 @@ class DirectionDisplay extends Component {
 					<DottedLineContainer>
 						<DottedLine />
 					</DottedLineContainer>
+          <DottedLineContainer>
+            <DottedLine />
+          </DottedLineContainer>
+          <DottedLineContainer>
+
+          </DottedLineContainer>
 					<DirectionContainer />
 				</GraphContainer>
 			</Container>
 		)
-	}	
+	}
 }
 
 export default DirectionDisplay
