@@ -30,7 +30,7 @@ export const getResult = (state) => {
 
 export const getCurrentBtc = (state) => getReducer(state).value
 
-export const getBitCoinPriceHistory = (state) => getReducer(state).values
+export const getValues= (state) => getReducer(state).values
 
 const UPDATE_VALUE = "round/update-value"
 const UPDATE_VALUES = "round/update-values"

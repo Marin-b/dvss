@@ -12,6 +12,8 @@ const ResultBox = styled.div`
   text-align: center;
   div{
     margin: 0 auto;
+    color: white;
+    font-size: 30px;
   }
 `
 

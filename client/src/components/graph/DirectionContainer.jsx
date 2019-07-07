@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 
 import Dot from "./Dot"
-import { getBitCoinPriceHistory } from "../../store/round"
 import { getTimer } from "../../store/timer"
 
 const MAXTIMER = 5

@@ -27,7 +27,7 @@ class Balance extends Component{
             <b> {this.props.balance}</b>&nbsp; SAT
         </BalanceText>
         <BalanceText style={{opacity: "0.8", fontSize: '20px'}}>
-          <b> {Math.floor(((this.props.balance/100000000) * this.props.current) * 100) / 100}</b> &nbsp;$
+          <b> {Math.floor(((this.props.balance/100000000) * this.props.current) * 100) / 100}</b> &nbsp;USD
         </BalanceText>
       </Container>
       )

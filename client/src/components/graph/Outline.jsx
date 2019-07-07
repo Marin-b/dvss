@@ -2,30 +2,17 @@ import React, {Component} from 'react';
 import { connect } from "react-redux";
 import styled from "styled-components";
 import colors from "../../style"
-import DirectionContainer from "./DirectionContainer"
+import Dot from "./Dot"
 
 const Container = styled.div`
 	width: 100%;
-	height: 85%;
-`
-const Header = styled.div`
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	height: 10%;
-`
-
-const HeaderLabel = styled.div`
-	text-align: center;
-	width: 0%;
-  margin-left: -5%;
-	color: ${colors.tertiary};
-	font-size: 20px;
+	height: 100%;
+  margin-top: 40px;
 `
 
 const GraphContainer = styled.div`
-	height: 90%;
-	border: ${colors.secondary} solid 5px !important;
+	height: 100%;
+	border-bottom: ${colors.secondary} solid 5px !important;
 	width: 100%;
 	display: flex;
 	justify-content: space-between;
@@ -34,68 +21,64 @@ const GraphContainer = styled.div`
 
 const DottedLineContainer = styled.div`
 	height: 100%;
-	width: 0%;
+  text-align: center;
 `
-
+const Header = styled.div`
+  height: 40px
+  text-align: center;
+  color: ${colors.tertiary};
+  font-size: 20px;
+`
 const DottedLine = styled.div`
 	width: 50%;
-	height: 100%;
+	height: 85%;
 	border-right: 2px dotted ${colors.tertiary};
 `
-class DirectionDisplay extends Component {
+class GraphOutline extends Component {
 	render(){
 		return(
 			<Container>
-				<Header>
-					<HeaderLabel>
-
-					</HeaderLabel>
-					<HeaderLabel>
-						-15s
-					</HeaderLabel>
-					<HeaderLabel>
-						-10s
-					</HeaderLabel>
-					<HeaderLabel>
-						-5s
-					</HeaderLabel>
-					<HeaderLabel>
-						0s
-					</HeaderLabel>
-          <HeaderLabel>
-            5s
-          </HeaderLabel>
-          <HeaderLabel>
-
-          </HeaderLabel>
-				</Header>
 				<GraphContainer>
 					<DottedLineContainer>
-
 					</DottedLineContainer>
 					<DottedLineContainer>
+            <Header>
+              -5s
+            </Header>
 						<DottedLine />
 					</DottedLineContainer>
 					<DottedLineContainer>
-						<DottedLine />
+            <Header>
+              0s
+            </Header>
+            <DottedLine />
 					</DottedLineContainer>
 					<DottedLineContainer>
-						<DottedLine />
+            <Header>
+              5s
+            </Header>
+            <DottedLine />
 					</DottedLineContainer>
 					<DottedLineContainer>
-						<DottedLine />
+            <Header>
+              10s
+            </Header>
+            <DottedLine />
 					</DottedLineContainer>
           <DottedLineContainer>
+            <Header>
+              15s
+            </Header>
             <DottedLine />
           </DottedLineContainer>
           <DottedLineContainer>
 
           </DottedLineContainer>
-					<DirectionContainer />
+
 				</GraphContainer>
 			</Container>
 		)
 	}
 }
 
-export default DirectionDisplay
+export default GraphOutline

@@ -7,7 +7,7 @@ import User from "./components/user"
 import Balance from "./components/balance"
 import Timer from "./components/timer"
 import Bet from "./components/bet"
-import History from "./components/history"
+import Graph from "./components/graph"
 import Result from "./components/result"
 
 import colors from "./style"
@@ -45,19 +45,15 @@ function App() {
         <Logo>
           DVSS
         </Logo>
-        <User />
+
         <Row>
           <Balance />
           <Timer />
-          <Bet />
+          <Result />
         </Row>
-        <Row>
-
-          <Block>
-          </Block>
-        </Row>
-        <br />
       </AppWrapper>
+        <Graph />
+        <br />
     </Provider>
   );
 }

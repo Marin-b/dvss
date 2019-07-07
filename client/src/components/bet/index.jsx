@@ -22,7 +22,7 @@ class Bet extends Component {
   render() {
    return(
     <div>
-      {this.props.betPlaced ? <ShowBet/> : <PlaceBet/>}
+
     </div>
     )
   }

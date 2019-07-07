@@ -15,7 +15,7 @@ const Header = styled.div`
 
 const BalanceBox = styled.div`
   background-color: transparent;
-  height: 25vh;
+  height: 20vh;
   width: 300px;
   border-radius: 5px;
   text-align: center;
