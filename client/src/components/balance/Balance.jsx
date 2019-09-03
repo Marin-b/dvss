@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { connect } from "react-redux";
 import styled from "styled-components";
 import { getBalance } from "../../store/user"
-import { getCurrentBtc } from "../../store/round"
+import { getValue } from "../../store/value"
 import colors from "../../style"
 
 const BalanceText = styled.div`
@@ -36,6 +36,6 @@ class Balance extends Component{
 
 const mapStateToProps = (state) =>({
   balance: getBalance(state),
-  current: getCurrentBtc(state) || 0
+  current: getValue(state) || 0
 })
 export default connect(mapStateToProps)(Balance)

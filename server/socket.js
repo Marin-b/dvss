@@ -1,6 +1,7 @@
-import { User, Bet, Round } from "./schemas";
+import { User, Bet, Withdraw } from "./schemas";
 import opennode from "./opennode";
-import { findUser, emitRoundInformation } from "./helpers"
+import lightningPayReq from "bolt11";
+import { findUser, settleBet } from "./helpers"
 import store from "store"
 
 const socketEvent = (socket) => {
@@ -29,32 +30,25 @@ const socketEvent = (socket) => {
 
   socket.on("placeBet", async (amount, direction, userId) => {
     const user = await User.findById(userId)
-    const round = await Round.findById(store.get('bettingRound'))
     if (user.balance >= amount && !user.placedBet){
       const placedBet = store.get('placedBet')
-      if (placedBet.includes(userId)) {
-        return
-      } else {
-        placedBet.push(userId)
-        store.set('placedBet', placedBet)
-      }
       const bet = new Bet({
+        startValue: store.get("currentValue"),
         direction: direction,
         amount: amount,
-        gambler: user
-      })
+        gambler: user,
+        endValue: 0
+      });
+      console.log(bet);
       bet.save()
       .then(result => {
-        round.bets.push(bet)
-        round.save()
+        user.balance -= amount;
+        user.placedBet = true;
+        user.save()
         .then(result => {
-          user.balance -= amount
-          user.placedBet = true
-          user.save()
-          .then(result => {
-            socket.emit("betPlaced", amount, direction)
-            socket.emit(`updateBalance-${userId}`, user.balance)
-          })
+          socket.emit("betPlaced", amount, direction, bet.startValue);
+          socket.emit(`updateBalance-${userId}`, user.balance);
+          setTimeout(settleBet, 10000, bet, socket);
         })
       })
       .catch(err => {
@@ -65,11 +59,12 @@ const socketEvent = (socket) => {
     }
   })
 
-  socket.on("getRoundInformation", async () => {
-    emitRoundInformation(socket)
-  })
-
   socket.on("newDeposit", (amount, userId) => {
+    if(amount > 20000)
+    {
+      socket.emit("exceededDepositMaxAmount")
+      return
+    }
     opennode.createCharge({
       amount: amount,
       currency: "BTC",
@@ -82,6 +77,34 @@ const socketEvent = (socket) => {
     .catch(error => {
       console.error(`${error.status} | ${error.message}`);
     });
+  })
+
+  socket.on("newWithdrawal", async (bolt11, userId) => {
+    const user = await User.findById(userId)
+    if (lightningPayReq.decode(bolt11).satoshis <= user.balance)
+    {
+      opennode.initiateWithdrawalAsync({
+      type: 'ln',
+      address: bolt11,
+      description: userId,
+      callback_url: process.env.WITHDRAW_CALLBACK
+    }).then(withdrawal => {
+      const newWithdraw = new Withdraw ({
+        withdrawalId: withdrawal.id,
+        userId: userId
+      })
+      newWithdraw.save()
+      .catch(err => {
+        console.log(err)
+      })
+    })
+    .catch(error => {
+      console.error(`${error.status} | ${error.message}`);
+    });
+    } else
+    {
+      console.log("not enough balance")
+    }
   })
 }
 

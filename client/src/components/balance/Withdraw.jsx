@@ -28,26 +28,19 @@ const Container = styled.div`
 class Withdraw extends Component{
   constructor(props){
     super(props)
-    this.handleDeposit = this.handleDeposit.bind(this)
-    this.checkInputValidity = this.checkInputValidity.bind(this)
+    this.handleWithdraw = this.handleWithdraw.bind(this)
     this.amountInput = React.createRef()
   }
 
-  checkInputValidity() {
-    this.amountInput.current.inputRef.current.value=this.amountInput.current.inputRef.current.value.replace(/[^\d]/,'')
-  }
-
-  handleDeposit() {
-    if(this.props.userId){
-      this.props.socket.emit("newDeposit", this.amountInput.current.inputRef.current.value, this.props.userId)
-    }
+  handleWithdraw() {
+    this.props.socket.emit("newWithdrawal", this.amountInput.current.inputRef.current.value, this.props.userId )
   }
 
   render(){
     return(
       <Container>
-        <StyledInput ref={this.amountInput} onKeyUp={this.checkInputValidity} placeholder="Amount" />
-        <StyledButton onClick={this.handleDeposit}>
+        <StyledInput ref={this.amountInput}  placeholder="Amount" />
+        <StyledButton onClick={this.handleWithdraw}>
           Withdraw
         </StyledButton>
       </Container>

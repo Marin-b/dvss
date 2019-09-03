@@ -7,6 +7,14 @@ const betSchema = new Schema({
     type: Number,
     required: true
   },
+  startValue: {
+    type: Number,
+    required: true
+  },
+  endValue: {
+    type: Number,
+    required: false
+  },
   direction: {
     type: String,
     required: true

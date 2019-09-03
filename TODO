@@ -1,0 +1,12 @@
+TODO
+
+FRONTEND
+  REDUX
+    Remove rounds =>
+      delete round store
+    Timer store becomes value store
+    Bet store stores Start and End values
+  REACT
+    Delete graph
+
+

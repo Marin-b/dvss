@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { connect } from "react-redux";
 import styled from "styled-components";
-
+import colors from "../../style"
 import { updatePayreq, getPayreq } from "../../store/user"
 
 const TransparentBackground = styled.div`
@@ -21,7 +21,7 @@ const ModalDiv = styled.div`
   left: 25vw;
   min-height: 100px;
   border-radius: 10px;
-  background-color: white;
+  background-color: ${colors.secondary};
   text-align: center;
   padding: 10px 20px;
   opacity: 1;
@@ -42,7 +42,7 @@ const Exit = styled.div`
   top: 0;
   right: 0;
   font-size: 50px;
-  color: #1853FD;
+  color: ${colors.tertiary};
   cursor: pointer;
 `
 const getQRCodeUrl = (payreq) => `https://api.qrserver.com/v1/create-qr-code/?data=${payreq}&size=175x175`
@@ -55,7 +55,7 @@ class DepositModal extends Component {
         <ModalDiv>
           <RelativeContainer>
             <Exit onClick={() => { this.props.resetPayreq(undefined)}}>
-              x
+              X
             </Exit>
           </RelativeContainer>
           <img src={getQRCodeUrl(this.props.payreq)} />

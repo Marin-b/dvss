@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import { Button, Input } from "semantic-ui-react";
 import DepositModal from "./DepositModal"
-import { getUserId } from "../../store/user"
+import { getUserId, getPayreq } from "../../store/user"
 import { getSocket } from "../../store/socket"
 import colors from "../../style"
 
@@ -64,7 +64,8 @@ class Deposit extends Component{
 
 const mapStateToProps = (state) => ({
   userId: getUserId(state),
-  socket: getSocket(state)
+  socket: getSocket(state),
+  payreq: getPayreq(state)
 })
 
 export default connect(mapStateToProps)(Deposit)

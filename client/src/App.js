@@ -1,27 +1,19 @@
 import React from 'react';
 import { Provider } from "react-redux";
 import styled from "styled-components";
+import { Container, Row, Col} from "react-bootstrap"
 
 import store from "./store"
 import User from "./components/user"
 import Balance from "./components/balance"
-import Timer from "./components/timer"
+import Value from "./components/value"
 import Bet from "./components/bet"
-import Graph from "./components/graph"
-import Result from "./components/result"
-
+import Scene from "./components/scene"
 import colors from "./style"
+import Dollar from "./assets/dollar.png"
 
 const AppWrapper = styled.div`
-  padding: 40px;
-`
-const Row = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  @media only screen and (max-width: 600px){
-    flex-direction: column;
-  }
+  padding: 2vw;
 `
 
 const Block = styled.div`
@@ -38,21 +30,36 @@ const Logo = styled.div`
   font-family: 'Press Start 2P', cursive;
   padding-bottom: 10px;
 `
+
+const LeftColumn = styled.div`
+  height: 80vh;
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  width: 25vw;
+  min-width: 360px;
+`
+
 function App() {
   return (
      <Provider store={store}>
+      <User />
+      <Scene />
       <AppWrapper>
-        <Logo>
-          DVSS
-        </Logo>
-
-        <Row>
-          <Balance />
-          <Timer />
-          <Result />
-        </Row>
+      <img className="ld ld-bounce-a-px" src={Dollar} style={{animationDuration: "3.0s"}}/>
+        <Container>
+          <Row>
+            <LeftColumn>
+              <Logo>
+                DVSS
+              </Logo>
+              <Balance />
+              <Bet />
+            </LeftColumn>
+            <Col />
+          </Row>
+        </Container>
       </AppWrapper>
-        <Graph />
         <br />
     </Provider>
   );
