@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt"
 import fetch from "node-fetch"
-import { User, Round, Bet } from "../schemas"
+import { User, Bet, Withdraw } from "../schemas"
 import store from "store"
 
 export const findUser = async (givenKey) => {
@@ -15,46 +15,72 @@ export const findUser = async (givenKey) => {
   return null
 }
 
-export const emitRoundInformation = (io) => {
-  io.emit("roundInformation", store.get('roundId'), store.get('C_BTC'), store.get('1_BTC'), store.get('2_BTC'))
+export const emitRoundInformation = async (io) => {
+  io.emit("roundInformation", store.get('currentValue'), store.get("previousRounds"))
 }
 
-const settleBets = (round, io) => {
-  const bets = round.bets
-  bets.forEach( async (betId) => {
-    const bet = await Bet.findById(betId)
-    const user = await User.findById(bet.gambler)
-    if (bet.direction === round.direction){
-      updateBalance(io,user._id, bet.amount * 1.97)
-    }
-  })
+export const settleBet = (bet, socket) => {
+  let didWin = "lost";
+  bet.endValue = store.get("currentValue");
+  switch (bet.direction){
+    case "up":
+      if (bet.endValue > bet.startValue)
+      {
+        updateBalance(socket, bet.gambler._id, bet.amount * 1.97);
+        didWin = "won";
+      }
+      break;
+    case "down":
+      if (bet.endValue < bet.startValue)
+        {
+          updateBalance(socket, bet.gambler._id, bet.amount * 1.97);
+          didWin = "won";
+        }
+        break;
+    case "equal":
+      if (bet.endValue == bet.startValue)
+      {
+        updateBalance(socket, bet.gambler._id, bet.amount * 1.97);
+        didWin = "won";
+      }
+      break;
+  }
+  socket.emit("betSettled", didWin, bet.endValue)
+  console.log("emited settle")
+  bet.save();
 }
 
 export const updateBalance = async (io, id, amount) => {
+  console.log(amount, ",   userid:", id)
   const user = await User.findById(id)
   const balance = user.balance
   user.balance = balance + amount
+
   await user.save()
   io.emit(`updateBalance-${id}`, user.balance )
 }
 
-const getRoundDirection = (currentValue) => {
-  const oldValue = store.get('C_BTC').v
-
-  console.log('oldValue', oldValue, 'currentValue', currentValue)
-  if(!oldValue) {
-    return undefined
+const setRoundDirection = async (round, io) => {
+  round.value = await getCurrentBTCValue().catch(err => console.log(err))
+  const oldValue = store.get('currentValue')
+  const newValue = round.value
+  shiftRounds(newValue)
+ if ( newValue > oldValue ){
+    round.direction = "up"
+  } else if ( newValue < oldValue ){
+    round.direction = "down"
+  }else if ( oldValue === newValue ) {
+    round.direction = "equal"
   }
-  if ( oldValue === currentValue ) {
-    return "equal"
-  } else if ( currentValue > oldValue ){
-    return "up"
-  } else if ( currentValue < oldValue ){
-    return "down"
-  }
-} 
+  return round.save().then( () => settleBets(round, io))
+}
 
-const getCurrentBTCValue = async () => {
+export const getUserFromWithdrawId = async(withdrawId) => {
+  const withdrawalRecord =  await Withdraw.find({withdrawalId: withdrawId})
+  return withdrawalRecord[0].userId
+}
+
+export const getCurrentBTCValue = async () => {
   try {
     const response = await fetch(
       "https://apiv2.bitcoinaverage.com/indices/global/ticker/BTCUSD"
@@ -63,39 +89,6 @@ const getCurrentBTCValue = async () => {
     const newValue = await body["last"];
     return newValue.toFixed(2)
   } catch(err){
-    console.log(err)
-    return getCurrentBTCValue()
+    return await getCurrentBTCValue()
   }
-}
-
-export const newRound = () => {
-  const round = new Round({
-    endTime: Date.now(),
-    bets: [],
-    value: undefined,
-    direction: undefined
-  })
-  round.save()
-  return round.id
-}
-
-const updateBTCValues = (value, direction) => {
-  store.set('2_BTC', store.get('1_BTC'))
-  store.set('1_BTC', store.get('C_BTC'))
-  store.set('C_BTC', {v: value, d: direction})
-  store.set('roundId', newRound())
-}
-
-export const endOfRound = async (io) => {
-  console.log('roundId stored :', store.get('roundId'))
-  const currentRound = await Round.findById(store.get('roundId')).catch(err => console.log(err))
-  currentRound.value = await getCurrentBTCValue().catch(err => console.log(err))
-  const direction = getRoundDirection(currentRound.value)
-  console.log(direction)
-  currentRound.direction = direction
-  currentRound.save()
-  settleBets(currentRound, io)
-  updateBTCValues(currentRound.value, currentRound.direction)
-  emitRoundInformation(io)
-  store.set('placedBet', [])
 }

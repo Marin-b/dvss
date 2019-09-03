@@ -4,16 +4,14 @@ import { createStore } from 'redux'
 import socketEvents from "./initSocketEvent"
 import userReducer from "./user"
 import socketReducer from "./socket"
-import timerReducer from "./timer"
-import roundReducer from "./round"
+import valueReducer from "./value"
 import betReducer from "./bet"
 
 
 const reducers = combineReducers({
   userReducer,
   socketReducer,
-  timerReducer,
-  roundReducer,
+  valueReducer,
   betReducer
 })
 

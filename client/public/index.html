@@ -5,6 +5,7 @@
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
+
     <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
@@ -13,6 +14,17 @@
         <link
   rel="stylesheet"
   href="//cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css"
+/>
+<link href="https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" type="text/css" href="loading.css"/>
+<link href='https://fonts.googleapis.com/css?family=VT323' rel='stylesheet' type='text/css'>
+<link
+  rel="stylesheet"
+  href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+  integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+  crossorigin="anonymous"
 />
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
@@ -38,5 +50,40 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+    <style>
+      .tab-content{
+        height: 80%;
+        padding: 20px;
+      }
+      .nav-tabs{
+        border-bottom: 2px solid white;
+        font-size:20px;
+        font-family: 'Roboto', sans-serif;
+      }
+      .nav-link.active{
+        color: #4ECCA3 !important;
+        background-color: transparent !important;
+        border: none !important;
+        border-bottom: 2px solid #4ECCA3 !important;
+        margin-bottom: -2px;
+      }
+       .nav-link:hover{
+        background-color: transparent !important;
+        border: none !important;
+        border-bottom: 2px solid #4ECCA3 !important;
+        margin-bottom: -2px;
+      }
+      .nav-link{
+        color: white !important;
+        border: none !important;
+        font-weight: bold;
+      }
+      .tab-pane{
+        height: 100%;
+      }
+      body{
+        background-color: #393E46
+      }
+    </style>
   </body>
 </html>

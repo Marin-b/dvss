@@ -1,5 +1,5 @@
 import User from "./user"
-import Round from "./round"
 import Bet from "./bet"
+import Withdraw from "./withdraw"
 
-export { User, Round, Bet }
+export { User, Bet, Withdraw }

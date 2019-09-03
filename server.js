@@ -4,13 +4,13 @@ import mongoose from "mongoose";
 import http from "http";
 import socketIO from "socket.io";
 
-import countDown from "./server/countDown"
+import valueTicker from "./server/valueTicker"
 import opennode from "./server/opennode"
 import socketEvents from "./server/socket"
 import initStore from "./server/store"
+import { User, Bet, Withdraw } from "./server/schemas";
 
-import { updateBalance } from "./server/helpers"
-
+import { updateBalance, getUserFromWithdrawId } from "./server/helpers"
 const PORT = process.env.PORT || 3001
 
 const app = express();
@@ -21,13 +21,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // app.use(express.static(path.join(__dirname, 'client/build')))
 // // Anything that doesn't match the above, send back index.html
 
-
-app.get('/api/greeting', (req, res) => {
-  const name = req.query.name || 'Worlds';
-  res.setHeader('Content-Type', 'application/json');
-  res.send(JSON.stringify({ greeting: `Hello ${name}!` }));
-});
-
 const server = http.createServer(app)
 
 const io = socketIO(server)
@@ -36,10 +29,26 @@ const io = socketIO(server)
 app.post('/webhook/charge', (req, res) => {
   const charge = req.body;
   const isValid = opennode.signatureIsValid(charge);
-  console.log('hooked on')
   if (isValid && charge.status === 'paid') {
       //Signature is valid
     updateBalance(io, charge.description, parseInt(charge.price, 10))
+  }
+  else {
+      //Signature is invalid. Ignore.
+  }
+})
+
+
+app.post('/webhook/withdraw', async (req, res) => {
+  console.log("webhook activated")
+  const withdrawal = req.body
+  const received = withdrawal.hashed_order;
+  const isValid = opennode.signatureIsValid(withdrawal);
+  const withUserId = await getUserFromWithdrawId(withdrawal.id)
+  console.log(req.body)
+  if (isValid && withdrawal.status == "confirmed") {
+      //Signature is valid
+      updateBalance(io, withUserId, parseInt(withdrawal.amount, 10) * -1);
   }
   else {
       //Signature is invalid. Ignore.
@@ -55,7 +64,7 @@ io.on("connection", socket => {
   socketEvents(socket)
 })
 
-const MONGO_URL = process.env.MONGODB_URI || `mongodb+srv://${process.env.MONGOUSER}:${process.env.MONGOPASSWORD}@cluster0-0vkq1.gcp.mongodb.net/${process.env.MONGODB}?retryWrites=true`
+const MONGO_URL = process.env.MONGODB_URI || `mongodb://127.0.0.1:27017/dvss`
 
 mongoose.connect( MONGO_URL,
   { useNewUrlParser: true }
@@ -63,7 +72,7 @@ mongoose.connect( MONGO_URL,
 .then(() => {
   server.listen(PORT, () => console.log('Express server is running on localhost:3001'));
   initStore();
-  countDown(io);
+  valueTicker(io);
 })
 .catch(err => {
   console.log(err);
