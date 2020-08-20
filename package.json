@@ -13,7 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^3.0.6",
+    "bcrypt": "^5.0.0",
     "bolt11": "^1.2.6",
     "dotenv": "^8.0.0",
     "esm": "^3.2.25",
